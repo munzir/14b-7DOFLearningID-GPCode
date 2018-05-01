@@ -1,4 +1,4 @@
-function [q,dq,ddq,torque,time,M,Cg] = get_data(dir, num_samples, shuffle_data)
+function [q,dq,ddq,torque,time,M_new,Cg] = get_data(dir, num_samples, shuffle_data)
 
 dir = 'all_data/data_7/';
 num_samples = 100;
@@ -33,10 +33,10 @@ ddq_data = ddq_data(1005:end-1005,:);
 torque_data = torque_data(1005:end-1005,:);
 t_data = t_data(1005:end-1005,:);
 Cg = Cg(1005:end-1005,:);
-M = M(1005*7:end-1005*7,:);
+M = M(1005*7:end-1004*7,:);
 
 if shuffle_data
-    random_indices = randperm(size(q_data,1));
+    random_indices = randperm(size(q_data,1)-1);
 else
     random_indices = 1:1:size(q_data,1);
 end
@@ -61,11 +61,13 @@ Cg = Cg(1:num_samples);
 %%
 M_new = [];
 
-random_indices(1,20510)
+% size(M)
 
 for i=1:size(random_indices,2)
-%     size(M)
+%     i
+%     random_indices(1,i)
     M_new = [M_new; M((random_indices(1,i)-1)*7+1:(random_indices(1,i)-1)*7+7,:)];
 end
+size(M_new)
 end
 
