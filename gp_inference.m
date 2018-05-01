@@ -1,9 +1,9 @@
 
 clear all;
-num_training_samples = 100;
-num_test_samples = 10;
+num_training_samples = 2000;
+num_test_samples = 100;
 
-dir = 'all_data/data_7/';
+dir = 'all_data/data_8/';
 
 time = tdfread(strcat(dir,'dataTime.txt'));
 t_data = time.dataTime;
@@ -23,10 +23,10 @@ q_data = q_data.dataQ;
 dq_data = tdfread(strcat(dir,'dataQdot.txt'), '\t');
 dq_data = dq_data.dataQdot;
 
-ddq_data = calc_ddq(dq_data,t_data);
-disp('calculated ddq using filtered differentiation');
-% ddq_data = tdfread(strcat(dir, 'dataQdotdot.txt'));
-% ddq_data = ddq_data.dataQdotdot;
+% ddq_data = calc_ddq(dq_data,t_data);
+% disp('calculated ddq using filtered differentiation');
+ddq_data = tdfread(strcat(dir, 'dataQdotdot.txt'));
+ddq_data = ddq_data.dataQdotdot;
 
 
 q_data = q_data(1005:end-1005,:);
@@ -34,10 +34,8 @@ dq_data = dq_data(1005:end-1005,:);
 ddq_data = ddq_data(1005:end-1005,:);
 torque_data = torque_data(1005:end-1005,:);
 t_data = t_data(1005:end-1005,:);
-
-
-starting_training_index = 1000;
-ending_training_index = 3000;
+Cg = Cg(1005:end-1005,:);
+M = M(1005*7:end-1005*7,:);
 
 training_q = q_data(1:num_training_samples,:);
 test_q = q_data(num_training_samples+1:num_training_samples+num_test_samples,:);
@@ -53,7 +51,6 @@ test_torque = torque_data(num_training_samples+1:num_training_samples+num_test_s
 
 t_train = t_data(1:num_training_samples,:);
 t_test = t_data(num_training_samples+1:num_training_samples+num_test_samples,:);
-
 
 for i = 1:num_training_samples
          
@@ -94,7 +91,6 @@ predictions_train = rbd_mean_predict(hyp2, meanfunc, covfunc, likfunc, training_
 predictions_test = rbd_mean_predict(hyp2, meanfunc, covfunc, likfunc, training_trajectories, training_output, test_trajectories,test_PHI_BETA_mean);
 
 
-rmse = evaluate_predictions(predictions_test, test_torque);
 
 figure,
 subplot(3,3,1)
@@ -132,6 +128,15 @@ plot(t_train,training_torque(:,7),t_train,predictions_train(:,7))
 pct = evaluate_predictions(predictions_test, test_torque);
 
 disp('nMSE');
-pct
+disp(pct);
 disp('Hyperparameters');
-hyp2
+disp(hyp2);
+alpha = calc_alpha(hyp2, training_output, training_trajectories);
+disp('size(alpha)');
+disp(size(alpha));
+fid = fopen('alpha.txt','wt');
+for ii = 1:size(alpha,1)
+    fprintf(fid,'%g\t',alpha(ii,:));
+    fprintf(fid,'\n');
+end
+fclose(fid);

@@ -4,7 +4,7 @@ n = size(training_trajectories);
 N = n(1);
 K = [];
 for i=1:N
-    row = []
+    row = [];
     for j=1:N
         row = [row, calc_K(hyp, training_trajectories(i), training_trajectories(j))];
     end
