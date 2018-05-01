@@ -1,4 +1,4 @@
-clear all;
+% clear all;
 
 num_training_samples = 1000;
 num_test_samples = 100;
@@ -6,13 +6,15 @@ num_test_samples = 100;
 train_dir = 'all_data/data_7/';
 test_dir = 'all_data/data_8/';
 
-shuffle_data = true;
+shuffle_data = false;
 
 [training_q, training_dq,training_ddq,training_torque,t_train, M_train, Cg_train] = get_data(train_dir,num_training_samples, shuffle_data);
+disp(size(training_q));
+
 [test_q, test_dq,test_ddq,test_torque,t_test, M_test, Cg_test] = get_data(test_dir,num_test_samples, shuffle_data);
 
+disp('finished creating training & testing datasets');
 for i = 1:num_training_samples
-         
     q_sample = training_q(i,:);
     dq_sample = training_dq(i,:);
     ddq_sample = training_ddq(i,:);
@@ -22,11 +24,7 @@ for i = 1:num_training_samples
     
     
     A=M_train((i-1)*7+1:(i-1)*7+7,:);
-    size(A)
-    size(training_ddq)%%%%%%%%what?
-    size(Cg_train)
     training_PHI_BETA_mean(i,:) = (A*ddq_sample')'+Cg_train(i,:);
-    
     
 end
 disp('created training input, output');
@@ -98,33 +96,36 @@ disp('size(alpha)');
 disp(size(alpha));
 
 write_to_text_file(alpha,'alpha.txt');
-write_to_text_file(alpha,'alpha.txt');
-write_to_text_file(alpha,'alpha.txt');
-write_to_text_file(alpha,'alpha.txt');
-write_to_text_file(alpha,'alpha.txt');
+write_to_text_file(training_q, 'training_q.txt');
+write_to_text_file(training_dq,'training_dq.txt');
+write_to_text_file(training_ddq,'training_ddq.txt');
+write_to_text_file(training_torque,'training_torque.txt');
+write_to_text_file(t_train,'t_train.txt');
+write_to_text_file(M_train,'M_train.txt');
+write_to_text_file(Cg_train,'Cg_train.txt');
 
 
-fid = fopen('alpha.txt','wt');
-for ii = 1:size(alpha,1)
-    fprintf(fid,'%g\t',alpha(ii,:));
-    fprintf(fid,'\n');
-end
-fclose(fid);
-fid = fopen('training_q.txt','wt');
-for ii = 1:size(training_q,1)
-    fprintf(fid,'%g\t',training_q(ii,:));
-    fprintf(fid,'\n');
-end
-fclose(fid);
-fid = fopen('training_dq.txt','wt');
-for ii = 1:size(training_dq,1)
-    fprintf(fid,'%g\t',training_dq(ii,:));
-    fprintf(fid,'\n');
-end
-fclose(fid);
-fid = fopen('training_ddq.txt','wt');
-for ii = 1:size( training_ddq,1)
-    fprintf(fid,'%g\t',training_ddq(ii,:));
-    fprintf(fid,'\n');
-end
-fclose(fid);
+% fid = fopen('alpha.txt','wt');
+% for ii = 1:size(alpha,1)
+%     fprintf(fid,'%g\t',alpha(ii,:));
+%     fprintf(fid,'\n');
+% end
+% fclose(fid);
+% fid = fopen('training_q.txt','wt');
+% for ii = 1:size(training_q,1)
+%     fprintf(fid,'%g\t',training_q(ii,:));
+%     fprintf(fid,'\n');
+% end
+% fclose(fid);
+% fid = fopen('training_dq.txt','wt');
+% for ii = 1:size(training_dq,1)
+%     fprintf(fid,'%g\t',training_dq(ii,:));
+%     fprintf(fid,'\n');
+% end
+% fclose(fid);
+% fid = fopen('training_ddq.txt','wt');
+% for ii = 1:size( training_ddq,1)
+%     fprintf(fid,'%g\t',training_ddq(ii,:));
+%     fprintf(fid,'\n');
+% end
+% fclose(fid);

@@ -1,7 +1,5 @@
 function [q,dq,ddq,torque,time,M_new,Cg] = get_data(dir, num_samples, shuffle_data)
 
-dir = 'all_data/data_7/';
-num_samples = 100;
 
 time = tdfread(strcat(dir,'dataTime.txt'));
 t_data = time.dataTime;
@@ -34,7 +32,6 @@ torque_data = torque_data(1005:end-1005,:);
 t_data = t_data(1005:end-1005,:);
 Cg = Cg(1005:end-1005,:);
 M = M(1005*7:end-1004*7,:);
-
 if shuffle_data
     random_indices = randperm(size(q_data,1)-1);
 else
@@ -48,7 +45,7 @@ dq = dq_data(random_indices,:);
 dq = dq(1:num_samples,:);
 
 ddq = ddq_data(random_indices,:);
-ddq = ddq(1:num_samples);
+ddq = ddq(1:num_samples,:);
 
 torque = torque_data(random_indices,:);
 torque = torque(1:num_samples,:);
@@ -57,7 +54,7 @@ time = t_data(random_indices,:);
 time = time(1:num_samples);
 
 Cg = Cg(random_indices,:);
-Cg = Cg(1:num_samples);
+Cg = Cg(1:num_samples,:);
 %%
 M_new = [];
 
@@ -70,4 +67,3 @@ for i=1:size(random_indices,2)
 end
 size(M_new)
 end
-
