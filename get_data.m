@@ -24,7 +24,7 @@ dq_data = dq_data.dataQdot;
 ddq_data = tdfread(strcat(dir, 'dataQdotdot.txt'));
 ddq_data = ddq_data.dataQdotdot;
 
-
+size(q_data)
 q_data = q_data(1005:end-1005,:);
 dq_data = dq_data(1005:end-1005,:);
 ddq_data = ddq_data(1005:end-1005,:);
@@ -37,6 +37,7 @@ if shuffle_data
 else
     random_indices = 1:1:size(q_data,1);
 end
+
 
 q = q_data(random_indices,:);
 q = q(1:num_samples,:);

@@ -5,5 +5,5 @@ function pct = evaluate_predictions(predictions, test_torque)
     for i = 1:7
         rmse(i) = norm(diff(:,i));
         test_torque(i) = norm(test_torque(:,i));
-        pct(i) = rmse(i)/test_torque(i);
+        pct(i) = rmse(i)/(test_torque(i)*length(test_torque));
     end

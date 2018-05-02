@@ -1,0 +1,16 @@
+May 2 Wednesday
+Trial 14 (with error)
+
+Error function has been corrected
+
+Each joint's error has been scaled correspondingly
+Joint 1 -  30
+Joint 2 - 200
+Joint 3 -  15
+Joint 4 - 100
+Joint 5 -   3
+Joint 6 -  25
+Joint 7 -   1
+
+Run for "2" times the time period
+Additionally, including ddq, M, Cg, and Error data

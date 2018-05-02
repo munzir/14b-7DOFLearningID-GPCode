@@ -7,7 +7,7 @@ function [hyp2, meanfunc, covfunc, likfunc] = rbd_mean (training_PHI_BETA_mean, 
     
     hyp = struct('mean',[], 'cov', [1.5  0.1] , 'lik', -1);
 %     hyp = struct('mean',[], 'cov', [7.6941 12.5268] , 'lik', -2.5548);
-    hyp2 = minimize(hyp, @gp, -500, @infGaussLik, meanfunc, covfunc, likfunc, training_trajectories, training_output);
+    hyp2 = minimize(hyp, @gp, -1000, @infGaussLik, meanfunc, covfunc, likfunc, training_trajectories, training_output);
 %     hyp2 = hyp;
     disp('calculated hyperparameters using optimizing marginal likelihood');
     
